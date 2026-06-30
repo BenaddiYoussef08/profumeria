@@ -5,72 +5,82 @@ let parfumes = JSON.parse(localStorage.getItem("parfumes")) || [{ name: "Hawas i
 
 
 function check() {
-
-    let username = document.getElementById("username")
-    let password = document.getElementById("password")
+    let username = document.getElementById("username").value
+    let password = document.getElementById("password").value
+    
+    if (username == "" || password == "") {
+        alert("Compila tutti i campi")
+        return
+    }
+    
+    let users = JSON.parse(localStorage.getItem("users")) || []
+    
     for (let i = 0; i < users.length; i++) {
-        if (username.value===users[i].username) {
-            if (password.value===users[i].password) {
+        if (username === users[i].username) {
+            if (password === users[i].password) {
                 alert("Login effettuato con successo")
-                window.location.href = "/html/visualizza.html"
+                window.location.href = "./html/visualizza.html"
                 return
             } else {
                 alert("Password errata")
                 return
             }
-        }else {
-            alert("utente non trovato")
+        }
+    }
+    alert("Utente non trovato")
+}
+
+function add() {
+    let username = document.getElementById("username").value
+    let password = document.getElementById("password").value
+    
+    if (username == "" || password == "") {
+        alert("Compila tutti i campi")
+        return
+    }
+    
+    let newUser = { username: username, password: password }
+    let users = JSON.parse(localStorage.getItem("users")) || []
+    
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].username === username) {
+            alert("Utente già registrato")
             return
         }
     }
     
-}
-
-function add() {
-    if (document.getElementById("username").value == "" ) {
-        if (document.getElementById("password").value == "") {
-        alert("Compila tutti i campi")
-        return
-    }
-    let username = document.getElementById("username")
-    let password = document.getElementById("password")
-
-    let newUser = {username: username.value,password: password.value}
-    let users = JSON.parse(localStorage.getItem("users")) || []
-
     users.push(newUser)
     localStorage.setItem("users", JSON.stringify(users))
-
+    
     alert("Utente registrato con successo")
-    }
+    document.getElementById("username").value = ""
+    document.getElementById("password").value = ""
 }
 
 function addParfume() {
+    let name = document.getElementById("nome").value
+    let brand = document.getElementById("brand").value
+    let size = document.getElementById("size").value
+    let price = document.getElementById("price").value
 
-    if (document.getElementById("nome").value == "" ){
-        if (document.getElementById("brand").value == "" ){
-            if (document.getElementById("size").value == "" ){
-                if (document.getElementById("price").value == "" ){
-                    alert("Compila tutti i campi")
-                    return
-                }
-            }
-        }    
+    if (name == "" || brand == "" || size == "" || price == "") {
+        alert("Compila tutti i campi")
+        return
     }
 
-    let name = document.getElementById("nome")
-    let brand = document.getElementById("brand")
-    let size = document.getElementById("size")
-    let price = document.getElementById("price")
-
-    let newParfume = { name: name.value,brand: brand.value,size: size.value,price: price.value,like: 0}
+    let newParfume = { name: name, brand: brand, size: size, price: price, like: 0}
 
     let parfumes = JSON.parse(localStorage.getItem("parfumes")) || []
     parfumes.push(newParfume)
     localStorage.setItem("parfumes", JSON.stringify(parfumes))
 
     alert("Profumo salvato!")
+    document.getElementById("nome").value = ""
+    document.getElementById("brand").value = ""
+    document.getElementById("size").value = ""
+    document.getElementById("price").value = ""
 }
+
 
 
 function viewParfume() {
@@ -129,4 +139,3 @@ function Like(index) {
 
     viewParfume()
 }
-
